@@ -16,7 +16,7 @@ The goal is to create a microservice that:
 - Framework: Spring Boot (Web, Data JPA)
 - Database: PostgreSQL
 - ORM: Spring Data JPA with custom SQL queries (JOINs, subqueries, aggregations)
-- Migration Tool: Flyway
+- Migration Tool: Liquibase
 - HTTP Client: WebClient for external API calls
 - DTO Mapping: MapStruct
 - Documentation: Swagger (via springdoc-openapi)
