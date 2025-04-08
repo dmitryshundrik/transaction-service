@@ -6,25 +6,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "limits")
 @Data
-public class Limit {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
+@EqualsAndHashCode(callSuper = true)
+public class Limit extends CreatableEntity {
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

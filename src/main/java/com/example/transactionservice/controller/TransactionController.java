@@ -33,8 +33,9 @@ public class TransactionController {
     }
 
     @PostMapping("/limits")
-    public ResponseEntity<LimitResponseDto> setLimit(@RequestBody LimitRequestDto limitRequestDto) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public LimitResponseDto createLimit(@RequestBody LimitRequestDto limitRequestDto) {
+        return limitService.createLimit(limitRequestDto);
     }
 
     @GetMapping("/exceeded-transactions")

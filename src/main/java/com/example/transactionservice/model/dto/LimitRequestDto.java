@@ -1,6 +1,7 @@
 package com.example.transactionservice.model.dto;
 
 import com.example.transactionservice.model.enums.Currency;
+import com.example.transactionservice.model.enums.ExpenseCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -17,6 +18,10 @@ public record LimitRequestDto(
 
         @NotBlank(message = "Currency code cannot be empty")
         @Size(min = 3, max = 3, message = "Currency code must be exactly 3 characters long")
-        Currency currency
+        Currency currency,
+
+        @NotBlank(message = "Expense category code cannot be empty")
+        @Size(min = 7, max = 7, message = "Expense category must be exactly 7 characters long")
+        ExpenseCategory expenseCategory
 ) {
 }
