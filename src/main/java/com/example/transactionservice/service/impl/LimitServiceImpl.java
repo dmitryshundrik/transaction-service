@@ -20,6 +20,12 @@ public class LimitServiceImpl implements LimitService {
     private final LimitMapper limitMapper;
 
     @Override
+    public Limit findCurrentLimit() {
+        return limitRepository.findTopByOrderByCreatedAtDesc()
+                .orElseThrow(() -> new RuntimeException("No limit found"));
+    }
+
+    @Override
     public LimitResponseDto createLimit(LimitRequestDto limitRequestDto) {
         Limit limit = limitMapper.toLimit(limitRequestDto);
         return limitMapper.toLimitResponseDto(limitRepository.save(limit));

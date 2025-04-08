@@ -8,9 +8,6 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-/**
- * DTO for requesting a limit setup.
- */
 public record LimitRequestDto(
         @NotNull(message = "Limit amount cannot be null")
         @Positive(message = "Limit amount must be positive")

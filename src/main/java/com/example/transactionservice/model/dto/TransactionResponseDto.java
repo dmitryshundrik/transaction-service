@@ -5,21 +5,21 @@ import com.example.transactionservice.model.enums.ExpenseCategory;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-public class TransactionResponseDto {
+public record TransactionResponseDto(
+        String accountFrom,
 
-    private String accountFrom;
+        String accountTo,
 
-    private String accountTo;
+        Currency currency,
 
-    private Currency currency;
+        BigDecimal amount,
 
-    private BigDecimal amount;
+        ExpenseCategory expenseCategory,
 
-    private ExpenseCategory expenseCategory;
+        BigDecimal limitSum,
 
-    private BigDecimal limit_sum;
+        ZonedDateTime limitDatetime,
 
-    private ZonedDateTime limitDatetime;
-
-    private String limitCurrencyShortname;
+        String limitCurrencyShortname
+) {
 }

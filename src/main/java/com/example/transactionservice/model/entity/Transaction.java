@@ -42,7 +42,4 @@ public class Transaction extends CreatableEntity {
 
     @Column(name = "limit_exceeded", nullable = false)
     private boolean limitExceeded;
-
-    @Column(name = "amount_exceeded")
-    private BigDecimal amountExceeded;
 }
