@@ -5,6 +5,6 @@ import com.example.transactionservice.model.enums.Currency;
 
 public interface ExchangeRateService {
 
-    ExchangeRate getExchangeRate(Currency from);
+    ExchangeRate getCurrentExchangeRate(Currency from);
 
 }

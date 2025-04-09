@@ -42,4 +42,8 @@ public class Transaction extends CreatableEntity {
 
     @Column(name = "limit_exceeded", nullable = false)
     private boolean limitExceeded;
+
+    @ManyToOne
+    @JoinColumn(name = "exchange_rate_id")
+    private ExchangeRate exchangeRate;
 }

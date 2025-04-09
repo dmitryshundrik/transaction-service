@@ -32,36 +32,34 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     @Override
     @Transactional(readOnly = true)
-    public ExchangeRate getExchangeRate(Currency from) {
-        log.debug("Fetching exchange rate for currency: {}", from);
-        return exchangeRateRepository.findByCurrencyFromAndCurrencyTo(from, Currency.USD)
+    public ExchangeRate getCurrentExchangeRate(Currency currencyFrom) {
+        log.debug("Fetching exchange rate for currency: {}", currencyFrom);
+        return exchangeRateRepository.findTopByCurrencyFromOrderByCreatedAtDesc(currencyFrom)
                 .orElseThrow(() -> {
-                    log.error("Exchange rate not found for currency: {}", from);
+                    log.error("Exchange rate not found for currency: {}", currencyFrom);
                     return new ExchangeRateServiceException(GETTING_EXCHANGE_RATE_FAIL_MESSAGE);
                 });
     }
 
     @Scheduled(cron = "${exchange-rate.schedule.cron.update}")
-    protected void updateExchangeRates() {
-        log.info("Starting exchange rate update for all currencies");
+    protected void createExchangeRates() {
+        log.info("Starting exchange rate create for all currencies");
         for (Currency currency : Currency.values()) {
             if (!BASE_EXCHANGE_CURRENCY.equals(currency)) {
-                ExchangeRateDto dto = getExchangeRateFromClient(currency.name() + "/" + BASE_EXCHANGE_CURRENCY);
-                ExchangeRate entity = exchangeRateRepository.findByCurrencyFromAndCurrencyTo(currency, BASE_EXCHANGE_CURRENCY)
-                        .orElseThrow(() -> {
-                            log.error("No existing exchange rate found for {}/{}", currency, BASE_EXCHANGE_CURRENCY);
-                            return new ExchangeRateServiceException(GETTING_EXCHANGE_RATE_FAIL_MESSAGE);
-                        });
+                ExchangeRateDto dto = getExchangeRatesFromClient(currency.name() + "/" + BASE_EXCHANGE_CURRENCY);
+                ExchangeRate entity = new ExchangeRate();
+                entity.setCreatedAt(ZonedDateTime.now());
+                entity.setCurrencyFrom(currency);
+                entity.setCurrencyTo(BASE_EXCHANGE_CURRENCY);
                 entity.setRate(dto.rate());
-                entity.setUpdatedAt(ZonedDateTime.now());
                 exchangeRateRepository.save(entity);
-                log.debug("Updated exchange rate for {}/{}: {}", currency, BASE_EXCHANGE_CURRENCY, dto.rate());
+                log.debug("Created exchange rate for {}/{}: {}", currency, BASE_EXCHANGE_CURRENCY, dto.rate());
             }
         }
         log.info("Finished exchange rate update");
     }
 
-    private ExchangeRateDto getExchangeRateFromClient(String symbol) {
+    private ExchangeRateDto getExchangeRatesFromClient(String symbol) {
         log.debug("Requesting exchange rate from client for symbol: {}", symbol);
         try {
             ExchangeRateDto dto = exchangeRateClient.getExchangeRate(symbol, apiKey);

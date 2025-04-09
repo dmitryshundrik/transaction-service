@@ -13,9 +13,8 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT COALESCE(SUM(t.amount * er.rate), 0) " +
+    @Query("SELECT COALESCE(SUM(t.amount * t.exchangeRate.rate), 0) " +
             "FROM Transaction t " +
-            "JOIN ExchangeRate er ON er.currencyFrom = t.currency AND er.currencyTo = 'USD' " +
             "WHERE t.expenseCategory = :expenseCategory " +
             "AND t.createdAt BETWEEN :startDate AND :endDate")
     BigDecimal findMonthlyTransactionExpenses(@Param("expenseCategory") ExpenseCategory expenseCategory,

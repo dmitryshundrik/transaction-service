@@ -39,21 +39,24 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Creating transaction for account: {} to {}", transactionRequestDto.accountFrom(), transactionRequestDto.accountTo());
         Transaction transaction = transactionMapper.toTransaction(transactionRequestDto);
         log.debug("Fetching exchange rate for currency: {}", transaction.getCurrency());
-        ExchangeRate exchangeRate = exchangeRateService.getExchangeRate(transaction.getCurrency());
+        ExchangeRate exchangeRate = exchangeRateService.getCurrentExchangeRate(transaction.getCurrency());
         BigDecimal amountUsd = transaction.getAmount().multiply(exchangeRate.getRate());
         log.debug("Calculated amount in USD: {}", amountUsd);
         BigDecimal monthlyExpenses = getMonthlyExpenses(transaction.getExpenseCategory(), transaction.getCreatedAt()).add(amountUsd);
-        Limit currentLimit = limitService.findCurrentLimit();
+        Limit currentLimit = limitService.getCurrentLimit();
         boolean limitExceeded = currentLimit.getAmount().subtract(monthlyExpenses).compareTo(BigDecimal.ZERO) < 0;
         transaction.setLimit(currentLimit);
         transaction.setLimitExceeded(limitExceeded);
+        transaction.setExchangeRate(exchangeRate);
         transaction = transactionRepository.save(transaction);
         log.info("Transaction created with ID: {}", transaction.getId());
     }
 
     @Override
     public List<TransactionResponseDto> getExceededTransactions() {
-        return transactionRepository.findByLimitExceeded(true).stream().map(transactionMapper::toTransactionResponseDto).toList();
+        return transactionRepository.findByLimitExceeded(true).stream()
+                .map(transactionMapper::toTransactionResponseDto)
+                .toList();
     }
 
     private BigDecimal getMonthlyExpenses(ExpenseCategory category, ZonedDateTime transactionDate) {

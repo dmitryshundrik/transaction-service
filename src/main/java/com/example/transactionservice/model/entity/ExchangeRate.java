@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "exchange_rates")
@@ -22,9 +21,6 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExchangeRate extends CreatableEntity {
-
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
 
     @Column(name = "currency_from", nullable = false)
     @Enumerated(EnumType.STRING)

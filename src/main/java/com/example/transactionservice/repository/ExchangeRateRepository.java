@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
 
-    Optional<ExchangeRate> findByCurrencyFromAndCurrencyTo(Currency fromCurrency, Currency toCurrency);
+    Optional<ExchangeRate> findTopByCurrencyFromOrderByCreatedAtDesc(Currency currencyFrom);
 
 }
