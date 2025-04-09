@@ -1,6 +1,5 @@
 # Bank Transaction Microservice
-This project is a prototype of a microservice developed as a test task for a Junior Java Developer position. The microservice processes bank transactions, manages spending limits, and integrates with an external API to fetch exchange rates. It is built using Spring Boot and adheres to modern Java development practices.
-
+This project is a prototype of a microservice developed as a test task for a Junior Java Developer position. The microservice processes bank transactions, manages spending limits, and integrates with an external API to fetch exchange rates.
 ## Project Overview
 
 ### Purpose
