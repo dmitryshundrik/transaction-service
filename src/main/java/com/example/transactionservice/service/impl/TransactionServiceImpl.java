@@ -12,6 +12,7 @@ import com.example.transactionservice.service.ExchangeRateService;
 import com.example.transactionservice.service.LimitService;
 import com.example.transactionservice.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -34,28 +36,31 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void createTransaction(TransactionRequestDto transactionRequestDto) {
+        log.info("Creating transaction for account: {} to {}", transactionRequestDto.accountFrom(), transactionRequestDto.accountTo());
         Transaction transaction = transactionMapper.toTransaction(transactionRequestDto);
+        log.debug("Fetching exchange rate for currency: {}", transaction.getCurrency());
         ExchangeRate exchangeRate = exchangeRateService.getExchangeRate(transaction.getCurrency());
         BigDecimal amountUsd = transaction.getAmount().multiply(exchangeRate.getRate());
-        BigDecimal monthlyExpenses = getMonthlyExpenses(transaction.getExpenseCategory(), transaction.getCreatedAt())
-                .add(amountUsd);
+        log.debug("Calculated amount in USD: {}", amountUsd);
+        BigDecimal monthlyExpenses = getMonthlyExpenses(transaction.getExpenseCategory(), transaction.getCreatedAt()).add(amountUsd);
         Limit currentLimit = limitService.findCurrentLimit();
         boolean limitExceeded = currentLimit.getAmount().subtract(monthlyExpenses).compareTo(BigDecimal.ZERO) < 0;
         transaction.setLimit(currentLimit);
         transaction.setLimitExceeded(limitExceeded);
-        transactionRepository.save(transaction);
+        transaction = transactionRepository.save(transaction);
+        log.info("Transaction created with ID: {}", transaction.getId());
     }
 
     @Override
     public List<TransactionResponseDto> getExceededTransactions() {
-        return transactionRepository.findByLimitExceeded(true)
-                .stream()
-                .map(transactionMapper::toTransactionResponseDto)
-                .toList();
+        return transactionRepository.findByLimitExceeded(true).stream().map(transactionMapper::toTransactionResponseDto).toList();
     }
 
     private BigDecimal getMonthlyExpenses(ExpenseCategory category, ZonedDateTime transactionDate) {
         ZonedDateTime startDate = transactionDate.withDayOfMonth(1).truncatedTo(ChronoUnit.DAYS);
-        return transactionRepository.findMonthlyTransactionExpenses(category, startDate, transactionDate);
+        log.debug("Calculating monthly expenses for category {} from {} to {}", category, startDate, transactionDate);
+        BigDecimal expenses = transactionRepository.findMonthlyTransactionExpenses(category, startDate, transactionDate);
+        log.debug("Monthly expenses calculated: {}", expenses);
+        return expenses;
     }
 }
