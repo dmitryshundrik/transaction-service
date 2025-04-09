@@ -13,7 +13,7 @@ public interface TransactionMapper {
     Transaction toTransaction(TransactionRequestDto transactionRequestDto);
 
     @Mapping(target = "limitSum", source = "limit.amount")
-    @Mapping(target = "limitDatetime", source = "limit.createdAt")
+    @Mapping(target = "limitCreatedAt", source = "limit.createdAt")
     @Mapping(target = "limitCurrencyShortname", constant = "USD")
     TransactionResponseDto toTransactionResponseDto(Transaction transaction);
 }

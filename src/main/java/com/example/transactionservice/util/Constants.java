@@ -10,4 +10,8 @@ public class Constants {
             "failed: %s";
 
     public static final Currency BASE_EXCHANGE_CURRENCY = Currency.USD;
+
+    public static final String DATE_FORMAT_YMDHMS = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String DATE_FORMAT_YMDHMSX = "yyyy-MM-dd HH:mm:ssX";
 }

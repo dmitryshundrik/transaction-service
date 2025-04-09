@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+import static com.example.transactionservice.util.Constants.DATE_FORMAT_YMDHMSX;
+
 @Schema(description = "DTO for creating a transaction")
 public record TransactionRequestDto(
         @Schema(description = "The sender's bank account number", example = "0000000123")
@@ -45,7 +47,7 @@ public record TransactionRequestDto(
         @Schema(description = "The date and time of the transaction", example = "2022-01-30 00:00:00+06")
         @NotNull(message = "Date and time must not be null")
         @JsonProperty("datetime")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ssX")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT_YMDHMSX)
         ZonedDateTime createdAt
 ) {
 }

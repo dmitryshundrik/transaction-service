@@ -1,12 +1,14 @@
 package com.example.transactionservice.model.dto;
 
 import com.example.transactionservice.model.enums.Currency;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+import static com.example.transactionservice.util.Constants.DATE_FORMAT_YMDHMS;
+
 public record LimitResponseDto(
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT_YMDHMS)
         ZonedDateTime createdAt,
 
         BigDecimal amount,
