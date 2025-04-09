@@ -2,12 +2,14 @@ package com.example.transactionservice.model.dto;
 
 import com.example.transactionservice.model.enums.Currency;
 import com.example.transactionservice.model.enums.ExpenseCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 @Schema(description = "DTO for creating a transaction")
 public record TransactionRequestDto(
@@ -32,8 +34,13 @@ public record TransactionRequestDto(
         @JsonProperty("sum")
         BigDecimal amount,
 
-        @Schema(description = "The category of the expense (e.g., product or service)", example = "product")
+        @Schema(description = "The category of the expense (e.g., product or service)", example = "PRODUCT")
         @JsonProperty("expense_category")
-        ExpenseCategory expenseCategory
+        ExpenseCategory expenseCategory,
+
+        @Schema(description = "The date and time of the transaction", example = "2022-01-30 00:00:00+06")
+        @JsonProperty("datetime")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ssX")
+        ZonedDateTime createdAt
 ) {
 }

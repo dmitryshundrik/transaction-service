@@ -10,7 +10,6 @@ import java.time.ZonedDateTime;
 @Mapper(componentModel = "spring", imports = ZonedDateTime.class)
 public interface TransactionMapper {
 
-    @Mapping(target = "createdAt", expression = "java(ZonedDateTime.now())")
     Transaction toTransaction(TransactionRequestDto transactionRequestDto);
 
     @Mapping(target = "limitSum", source = "limit.amount")
