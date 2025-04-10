@@ -109,7 +109,7 @@ Once the containers are running, you can interact with the REST APIs using tools
 Access the Swagger UI for interactive API documentation:
 
    ```bash
-   http://localhost:8090/swagger-ui.html
+   http://localhost:8090/swagger-ui/index.html
    ```
    
 
