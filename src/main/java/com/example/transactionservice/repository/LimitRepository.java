@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface LimitRepository extends JpaRepository<Limit, Long> {
 
     Optional<Limit> findTopByOrderByCreatedAtDesc();
-
 }

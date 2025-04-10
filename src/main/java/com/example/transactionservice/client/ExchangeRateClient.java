@@ -1,4 +1,4 @@
-package com.example.transactionservice.service.client;
+package com.example.transactionservice.client;
 
 import com.example.transactionservice.model.dto.ExchangeRateDto;
 import org.springframework.cloud.openfeign.FeignClient;

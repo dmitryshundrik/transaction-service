@@ -9,12 +9,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 import static com.example.transactionservice.util.Constants.DATE_FORMAT_YMDHMSX;
 
 @Schema(description = "DTO for creating a transaction")
+@Builder
 public record TransactionRequestDto(
         @Schema(description = "The sender's bank account number", example = "0000000123")
         @Pattern(regexp = "\\d{10}", message = "The number must consist only of digits")

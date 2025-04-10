@@ -6,7 +6,7 @@ import com.example.transactionservice.model.entity.ExchangeRate;
 import com.example.transactionservice.model.enums.Currency;
 import com.example.transactionservice.repository.ExchangeRateRepository;
 import com.example.transactionservice.service.ExchangeRateService;
-import com.example.transactionservice.service.client.ExchangeRateClient;
+import com.example.transactionservice.client.ExchangeRateClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 
-import static com.example.transactionservice.util.Constants.BASE_EXCHANGE_CURRENCY;
+import static com.example.transactionservice.util.Constants.EXCHANGE_CURRENCY_USD;
 import static com.example.transactionservice.util.Constants.GETTING_EXCHANGE_RATE_FAIL_MESSAGE;
 
 @Service
@@ -32,9 +32,9 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     @Override
     @Transactional(readOnly = true)
-    public ExchangeRate getCurrentExchangeRate(Currency currencyFrom) {
-        log.debug("Fetching exchange rate for currency: {}", currencyFrom);
-        return exchangeRateRepository.findTopByCurrencyFromOrderByCreatedAtDesc(currencyFrom)
+    public ExchangeRate getActualExchangeRate(Currency currencyFrom, ZonedDateTime transactionDate) {
+        log.debug("Fetching exchange rate for currency: {}, transactionDate {}", currencyFrom, transactionDate);
+        return exchangeRateRepository.findActualExchangeRate(currencyFrom, transactionDate)
                 .orElseThrow(() -> {
                     log.error("Exchange rate not found for currency: {}", currencyFrom);
                     return new ExchangeRateServiceException(GETTING_EXCHANGE_RATE_FAIL_MESSAGE);
@@ -45,15 +45,15 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     protected void createExchangeRates() {
         log.info("Starting exchange rate create for all currencies");
         for (Currency currency : Currency.values()) {
-            if (!BASE_EXCHANGE_CURRENCY.equals(currency)) {
-                ExchangeRateDto dto = getExchangeRatesFromClient(currency.name() + "/" + BASE_EXCHANGE_CURRENCY);
+            if (!EXCHANGE_CURRENCY_USD.equals(currency)) {
+                ExchangeRateDto dto = getExchangeRatesFromClient(currency.name() + "/" + EXCHANGE_CURRENCY_USD);
                 ExchangeRate entity = new ExchangeRate();
                 entity.setCreatedAt(ZonedDateTime.now());
                 entity.setCurrencyFrom(currency);
-                entity.setCurrencyTo(BASE_EXCHANGE_CURRENCY);
+                entity.setCurrencyTo(EXCHANGE_CURRENCY_USD);
                 entity.setRate(dto.rate());
                 exchangeRateRepository.save(entity);
-                log.debug("Created exchange rate for {}/{}: {}", currency, BASE_EXCHANGE_CURRENCY, dto.rate());
+                log.debug("Created exchange rate for {}/{}: {}", currency, EXCHANGE_CURRENCY_USD, dto.rate());
             }
         }
         log.info("Finished exchange rate update");

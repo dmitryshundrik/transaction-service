@@ -5,9 +5,11 @@ import com.example.transactionservice.model.enums.ExpenseCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import java.math.BigDecimal;
 
 @Schema(description = "DTO for creating a limit")
+@Builder
 public record LimitRequestDto(
         @Schema(description = "The limit amount", example = "1000.00")
         @NotNull(message = "Limit amount cannot be null")
