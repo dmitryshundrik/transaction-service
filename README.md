@@ -35,7 +35,7 @@ as a database and is containerized using Docker and Docker Compose.
 7. Development of Business Logic (Services): **8-10 hours**
 8. Writing Tests (Unit + Integration): **6-8 hours**
 9. Documentation (Swagger, README): **2-3 hours**
-10. Additional Tasks (Docker): 4-5 **hours (optional)**\
+10. Additional Tasks (Docker): 4-5 **hours (optional)**  
 
 *Total: 40-50 hours*
 
