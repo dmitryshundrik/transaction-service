@@ -1,14 +1,16 @@
 # Bank Transaction Microservice
-This project is a prototype of a microservice developed as a test task for a Junior Java Developer position. The microservice processes bank transactions, manages spending limits, and integrates with an external API to fetch exchange rates.
+This is a Spring Boot application for managing transactions, limits, and exchange rates. It provides REST APIs to create
+transactions, set spending limits, retrieve exceeded transactions, and fetch exchange rates. The project uses PostgreSQL
+as a database and is containerized using Docker and Docker Compose.
+
 ## Project Overview
 
-### Purpose
-The goal is to create a microservice that:
-- Handles bank transactions in multiple currencies (e.g., KZT, RUB) and stores them in a database.
-- Maintains monthly spending limits in USD for two categories: products and services (default: 1000 USD).
-- Fetches and caches exchange rates (e.g., KZT/USD, RUB/USD) from an external API.
-- Flags transactions exceeding the monthly limit (limit_exceeded).
-- Allows clients to set new limits and retrieve transactions that exceed limits.
+### Features
+- Create and manage transactions.
+- Set and retrieve spending limits.
+- Fetch exceeded transactions.
+- Retrieve real-time exchange rates with scheduled updates.
+- RESTful API with OpenAPI/Swagger documentation.
 
 ### Tech Stack
 - Language: Java (using BigDecimal, enums, Stream API, etc.)
@@ -22,3 +24,25 @@ The goal is to create a microservice that:
 - Build Tool: Maven
 - Testing: JUnit, Mockito
 - Other: Lombok, SLF4J for logging
+
+### Task Analysis and Estimation
+1. Task Analysis and Requirements Gathering: **2-3 hours**
+2. Architecture and Data Model Design: **4-5 hours**
+3. Project Setup (Spring Boot, Dependencies): **2 hours**
+4. Implementation of Models, Repositories, and Migrations: **4-5 hours**
+5. Creation of REST API (Controllers): **4-5 hours**
+6. Integration with External API (Exchange Rates): **4-5 hours**
+7. Development of Business Logic (Services): **8-10 hours**
+8. Writing Tests (Unit + Integration): **6-8 hours**
+9. Documentation (Swagger, README): **2-3 hours**
+10. Additional Tasks (Docker): 4-5 **hours (optional)**\
+
+*Total: 40-50 hours*
+
+
+
+
+
+
+
+
