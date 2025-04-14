@@ -6,7 +6,7 @@ The project uses PostgreSQL as a database and is containerized using Docker and 
 
 The application is deployed on a server and can be accessed from Belarus (access from outside can be limited) for
 testing
-at the URL: [link](http://85.209.148.18:8090/api/client/).
+at the URL: [link](http://85.209.148.18:8090/swagger-ui/index.html#/).
 
 ## Project Overview
 
